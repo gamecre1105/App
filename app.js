@@ -95,6 +95,7 @@ form?.addEventListener("submit", async (event) => {
 
   try {
     const data = new FormData();
+    data.append("action", "write");
     data.append("targetId", targetInput.value);
     data.append("nickname", nickname);
     data.append("contact", contact);

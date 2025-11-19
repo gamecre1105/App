@@ -79,14 +79,11 @@ form?.addEventListener("submit", async (event) => {
     return;
   }
 
-  const payload = {
-    targetId: targetInput.value,
-    nickname: form.nickname.value.trim(),
-    contact: form.contact.value.trim(),
-    message: form.message.value.trim()
-  };
+  const nickname = form.nickname.value.trim();
+  const contact = form.contact.value.trim();
+  const message = form.message.value.trim();
 
-  if (!payload.nickname || !payload.contact || !payload.message) {
+  if (!nickname || !contact || !message) {
     statusEl.style.color = "#dc2626";
     statusEl.textContent = "すべての項目を入力してください。";
     return;
@@ -97,10 +94,16 @@ form?.addEventListener("submit", async (event) => {
   statusEl.textContent = "送信中...";
 
   try {
+    const data = new FormData();
+    data.append("targetId", targetInput.value);
+    data.append("nickname", nickname);
+    data.append("contact", contact);
+    data.append("message", message);
+
     const res = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: data,
+      mode: "cors"
     });
 
     if (!res.ok) throw new Error("送信に失敗しました。");
